@@ -3,7 +3,7 @@ import psycopg2
 
 class DBManager:
     def __init__(self, dbname, user, password, host):
-        self.conn = psycopg2.connect(dbname='course_work5', user='postgres', password='12345', host='localhost')
+        self.conn = psycopg2.connect(dbname=dbname, user=user, password=password, host=host)
         self.cursor = self.conn.cursor()
 
     def get_companies_and_vacancies_count(self):

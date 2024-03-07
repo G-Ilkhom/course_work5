@@ -1,5 +1,36 @@
-from DBManager import DBManager
+import config
+import psycopg2
+from hh_data import HhScraper
+from database.utils import create_database, create_tables, insert_data
+from database.DBManager import DBManager
 
+# Список ID организаций
+employer_ids = ["2501719", "3202190", "2533", "9450736", "3934385", "227", "1204987", "2644166", "723204", "1008541"]
+
+scraper = HhScraper(employer_ids)
+scraper.get_employers()
+scraper.get_vacancies()
+
+# Создание соединения
+conn = psycopg2.connect(dbname='postgres', user=config.user, password=config.password, host=config.host)
+conn.autocommit = True
+
+# Создание курсора
+cursor = conn.cursor()
+
+create_database(cursor, config.dbname)
+
+# Подключение к БД
+conn = psycopg2.connect(dbname=config.dbname, user=config.user, password=config.password, host=config.host)
+cursor = conn.cursor()
+
+create_tables(cursor)
+insert_data(cursor, scraper)
+
+# Закрытие соединения
+conn.commit()
+cursor.close()
+conn.close()
 
 db_manager = DBManager('course_work5', 'postgres', '12345', 'localhost')
 
