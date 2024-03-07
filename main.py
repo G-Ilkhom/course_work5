@@ -32,7 +32,7 @@ conn.commit()
 cursor.close()
 conn.close()
 
-db_manager = DBManager('course_work5', 'postgres', '12345', 'localhost')
+db_manager = DBManager(config.dbname, config.user, config.password, config.host)
 
 print("Компании и количество вакансий:")
 companies_and_vacancies_count = db_manager.get_companies_and_vacancies_count()
